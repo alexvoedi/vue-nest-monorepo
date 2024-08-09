@@ -75,6 +75,11 @@ jobs:
     needs:
         - install-dependencies
     steps:
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.7.0
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -93,6 +98,11 @@ jobs:
     needs:
         - install-dependencies
     steps:
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.7.0
+
       - name: Checkout
         uses: actions/checkout@v4
 
