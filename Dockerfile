@@ -14,13 +14,13 @@ ENV NODE_ENV=build
 
 WORKDIR /app
 
+COPY . .
+
 RUN pnpm fetch
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter=common
 
 RUN pnpm --filter=common build
-
-COPY . .
 
 # ---
 
