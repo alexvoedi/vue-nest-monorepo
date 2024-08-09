@@ -16,7 +16,7 @@ WORKDIR /app
 
 RUN pnpm fetch --prod
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter=common
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 RUN pnpm --filter=common build
 

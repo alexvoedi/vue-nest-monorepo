@@ -32,7 +32,7 @@ jobs:
       - name: Install Dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: |
-          npx pnpm install
+          npx pnpm install --frozen-lockfile
 
   check-types:
     runs-on: ubuntu-latest
