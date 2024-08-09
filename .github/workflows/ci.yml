@@ -100,7 +100,7 @@ jobs:
 
       - name: Lint
         run: |
-          npm run lint
+          pnpm run lint
 
   test:
     runs-on: ubuntu-latest
