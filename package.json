@@ -22,14 +22,15 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "nx run-many --target=dev --all=true",
-    "test": "nx run-many --target=test --all=true --parallel=10",
-    "lint": "nx run-many --target=lint --all=true --parallel=10",
-    "lint:fix": "nx run-many --target=lint:fix --all=true --parallel=10",
-    "build": "nx run-many --target=build --all=true --parallel=false",
-    "build:backend": "nx run-many --target=build --projects=backend --parallel=false",
-    "build:packages": "nx run-many --target=build --projects=shared --parallel=10",
-    "typecheck": "nx run-many --target=typecheck --all=true",
+    "dev": "nx run-many -t dev",
+    "check": "nx run-many -t test lint typecheck",
+    "test": "nx run-many -t test --parallel=10",
+    "lint": "nx run-many -t lint --parallel=10",
+    "lint:fix": "nx run-many -t lint:fix --parallel=10",
+    "build": "nx run-many -t build",
+    "build:backend": "nx run-many -t build --projects=backend --parallel=false",
+    "build:packages": "nx run-many -t build --projects=shared --parallel=10",
+    "typecheck": "nx run-many -t typecheck",
     "prepare": "husky || true"
   },
   "devDependencies": {
