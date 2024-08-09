@@ -37,7 +37,7 @@ jobs:
       - name: Install Dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: |
-          npx pnpm install
+          npx pnpm install --frozen-lockfile
 
   check-types:
     runs-on: ubuntu-latest
@@ -48,6 +48,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.7.0
+          run_install: false
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -102,6 +103,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.7.0
+          run_install: false
 
       - name: Checkout
         uses: actions/checkout@v4
