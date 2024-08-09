@@ -52,7 +52,7 @@ jobs:
 
       - name: Build
         run: |
-          npx pnpm run -r build
+          npx pnpm --filter=common build
 
       - name: Check Types
         run: |
@@ -96,7 +96,7 @@ jobs:
 
       - name: Build
         run: |
-          npx pnpm run -r build
+          npx pnpm --filter=common build
 
       - name: Run Tests
         run: |
