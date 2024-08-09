@@ -19,7 +19,7 @@
   },
   "keywords": [],
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "dev": "nx run-many -t dev",
