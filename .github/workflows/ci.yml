@@ -41,10 +41,9 @@ jobs:
       #     path: node_modules
       #     key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
 
-      # - name: Install Dependencies
-      #   if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      #   run: |
-      #     pnpm install --frozen-lockfile
+      - name: Install Dependencies
+        run: |
+          pnpm install --frozen-lockfile
 
   check-types:
     runs-on: ubuntu-latest
