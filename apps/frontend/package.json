@@ -1,24 +1,8 @@
 {
   "name": "frontend",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "private": true,
-  "description": "",
-  "author": {
-    "name": "",
-    "email": ""
-  },
-  "license": "UNLICENSED",
-  "homepage": "",
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
-  "bugs": {
-    "url": "",
-    "email": ""
-  },
-  "keywords": [],
   "scripts": {
     "dev": "vite",
     "build": "cross-env NODE_ENV=production vite build",
@@ -29,6 +13,7 @@
   "dependencies": {
     "@vueuse/core": "^10.11.1",
     "@vueuse/head": "^2.0.0",
+    "common": "workspace:*",
     "pinia": "^2.2.1",
     "vue": "^3.4.37",
     "vue-router": "^4.4.3"
