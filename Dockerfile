@@ -14,7 +14,7 @@ ENV NODE_ENV=build
 
 WORKDIR /app
 
-RUN pnpm fetch --prod
+RUN pnpm fetch
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
