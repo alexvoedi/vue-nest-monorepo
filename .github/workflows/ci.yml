@@ -19,6 +19,11 @@ jobs:
   install-dependencies:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.7.0
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -39,6 +44,11 @@ jobs:
     needs:
       - install-dependencies
     steps:
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.7.0
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -50,15 +60,15 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          npx pnpm install --frozen-lockfile --offline
+          pnpm install --frozen-lockfile --offline
 
       - name: Build
         run: |
-          npx pnpm --filter=common build
+          pnpm --filter=common build
 
       - name: Check Types
         run: |
-          npx pnpm run typecheck
+          pnpm run typecheck
 
   lint:
     runs-on: ubuntu-latest
@@ -76,7 +86,7 @@ jobs:
 
       - name: Lint
         run: |
-          npx pnpm run lint
+          npm run lint
 
   test:
     runs-on: ubuntu-latest
