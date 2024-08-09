@@ -19,13 +19,14 @@ jobs:
   install-dependencies:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.7.0
-
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
 
       - name: Cache node_modules
         id: cache-node-modules
@@ -44,14 +45,14 @@ jobs:
     needs:
       - install-dependencies
     steps:
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.7.0
-          run_install: false
-
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
 
       - name: Load Cache
         uses: actions/cache@v4
@@ -76,13 +77,14 @@ jobs:
     needs:
         - install-dependencies
     steps:
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.7.0
-
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
 
       - name: Load Cache
         uses: actions/cache@v4
@@ -99,14 +101,14 @@ jobs:
     needs:
         - install-dependencies
     steps:
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.7.0
-          run_install: false
-
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
 
       - name: Load Cache
         uses: actions/cache@v4
