@@ -66,12 +66,6 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      # - name: Load Cache
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: node_modules
-      #     key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
-
       - name: Install Dependencies
         run: |
           pnpm install --frozen-lockfile --offline
@@ -98,11 +92,11 @@ jobs:
           version: 9.7.0
           run_install: false
 
-      - name: Load Cache
-        uses: actions/cache@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          path: node_modules
-          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          node-version: 22
+          cache: 'pnpm'
 
       - name: Lint
         run: |
@@ -122,15 +116,15 @@ jobs:
           version: 9.7.0
           run_install: false
 
-      - name: Load Cache
-        uses: actions/cache@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          path: node_modules
-          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          node-version: 22
+          cache: 'pnpm'
 
       - name: Install Dependencies
         run: |
-          pnpm install --frozen-lockfile
+          pnpm install --frozen-lockfile --offline
 
       - name: Build
         run: |
