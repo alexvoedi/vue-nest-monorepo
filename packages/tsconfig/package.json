@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "files": [
+    "backend.tsconfig.json",
     "base.tsconfig.json",
-    "nest.tsconfig.json",
-    "vue.tsconfig.json"
+    "frontend.tsconfig.json"
   ]
 }
