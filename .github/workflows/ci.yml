@@ -114,12 +114,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build the Docker image
-        run: |
-          cd apps/frontend
-          docker build
-            --target frontend
-            --tag $DOCKER_REGISTRY_URL/alexvoedi/$DOCKER_IMAGE_NAME:latest
-            .
+        run: docker build
+          --target frontend
+          --tag $DOCKER_REGISTRY_URL/alexvoedi/$DOCKER_IMAGE_NAME:latest
+          .
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -143,12 +141,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build the Docker image
-        run: |
-          cd apps/backend
-          docker build
-            --target backend
-            --tag $DOCKER_REGISTRY_URL/$GITHUB_ACTOR/$DOCKER_IMAGE_NAME-backend:latest
-            .
+        run: docker build
+          --target backend
+          --tag $DOCKER_REGISTRY_URL/$GITHUB_ACTOR/$DOCKER_IMAGE_NAME-backend:latest
+          .
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
