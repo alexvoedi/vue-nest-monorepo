@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "incremental": true,
+    "target": "ES2021",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "strictBindCallApply": false,
+    "strictNullChecks": false,
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "@alexvoedi/cps",
+  "private": true,
+  "packageManager": "pnpm@9.7.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "nx run-many --target=dev --all=true",
+    "test": "nx run-many --target=test --all=true --parallel=10",
+    "lint": "nx run-many --target=lint --all=true --parallel=10",
+    "lint:fix": "nx run-many --target=lint:fix --all=true --parallel=10",
+    "build": "nx run-many --target=build --all=true --parallel=false",
+    "build:backend": "nx run-many --target=build --projects=backend --parallel=false",
+    "build:packages": "nx run-many --target=build --projects=shared --parallel=10",
+    "typecheck": "nx run-many --target=typecheck --all=true",
+    "prepare": "husky || true"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "2.24.1",
+    "eslint": "^9.8.0",
+    "husky": "^9.1.3",
+    "lint-staged": "^15.2.8",
+    "nx": "19.5.6",
+    "prettier": "^3.3.3",
+    "tsup": "^8.2.4",
+    "typescript": "^5.5.4"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,vue,json,html}": [
+      "eslint --fix"
+    ]
+  }
+}
