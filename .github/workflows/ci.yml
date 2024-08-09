@@ -34,11 +34,20 @@ jobs:
         with:
           path: node_modules
           key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-
 
       - name: Install Dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: |
           pnpm install --frozen-lockfile
+
+      - name: Save Cache
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
 
   check-types:
     runs-on: ubuntu-latest
@@ -59,10 +68,12 @@ jobs:
         with:
           path: node_modules
           key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-
 
       - name: Install Dependencies
         run: |
-          pnpm install --frozen-lockfile
+          pnpm install --frozen-lockfile --offline
 
       - name: Build
         run: |
@@ -91,10 +102,12 @@ jobs:
         with:
           path: node_modules
           key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-
 
       - name: Lint
         run: |
-          npm run lint
+          pnpm run lint
 
   test:
     runs-on: ubuntu-latest
@@ -115,10 +128,12 @@ jobs:
         with:
           path: node_modules
           key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-
 
       - name: Install Dependencies
         run: |
-          pnpm install --frozen-lockfile
+          pnpm install --frozen-lockfile --offline
 
       - name: Build
         run: |
