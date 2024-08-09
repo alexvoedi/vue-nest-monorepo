@@ -18,9 +18,20 @@ WORKDIR /app
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
-RUN pnpm run -r build
+RUN pnpm --filter=common build
 
+# ---
+
+FROM build AS build-frontend
+
+RUN pnpm --filter=frontend build
 RUN pnpm deploy --filter=frontend --prod /prod/frontend
+
+# ---
+
+FROM build AS build-backend
+
+RUN pnpm --filter=backend build
 RUN pnpm deploy --filter=backend --prod /prod/backend
 
 # ---
@@ -29,8 +40,8 @@ FROM nginx:stable-alpine AS frontend
 
 WORKDIR /usr/share/nginx/html
 
-COPY --chown=nginx:nginx --from=build /prod/frontend/dist .
-COPY --chown=nginx:nginx --from=build /prod/frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --chown=nginx:nginx --from=build-frontend /prod/frontend/dist .
+COPY --chown=nginx:nginx --from=build-frontend /prod/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
@@ -42,7 +53,7 @@ FROM base AS backend
 
 WORKDIR /prod/backend
 
-COPY --from=build /prod/backend .
+COPY --from=build-backend /prod/backend .
 
 EXPOSE 3000
 

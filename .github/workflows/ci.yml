@@ -10,9 +10,9 @@ on:
       - main
 
 env:
-  DOCKER_IMAGE_NAME: monorepo
   DOCKER_REGISTRY_URL: ghcr.io
-  GITHUB_ACTOR: alexvoedi
+  DOCKER_NAMESPACE: alexvoedi
+  DOCKER_IMAGE_NAME: monorepo
   HUSKY: 0
 
 jobs:
@@ -118,7 +118,7 @@ jobs:
       - name: Build the Docker image
         run: docker build
           --target frontend
-          --tag $DOCKER_REGISTRY_URL/$GITHUB_ACTOR/$DOCKER_IMAGE_NAME:latest
+          --tag $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME:latest
           .
 
       - name: Login to GitHub Container Registry
@@ -129,7 +129,7 @@ jobs:
           password: ${{secrets.GITHUB_TOKEN}}
 
       - name: Push the latest tag
-        run: docker push $DOCKER_REGISTRY_URL/$GITHUB_ACTOR/$DOCKER_IMAGE_NAME-frontend:latest
+        run: docker push $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME-frontend:latest
 
   build-backend:
     runs-on: ubuntu-latest
@@ -145,7 +145,7 @@ jobs:
       - name: Build the Docker image
         run: docker build
           --target backend
-          --tag $DOCKER_REGISTRY_URL/$GITHUB_ACTOR/$DOCKER_IMAGE_NAME-backend:latest
+          --tag $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME-backend:latest
           .
 
       - name: Login to GitHub Container Registry
@@ -156,4 +156,4 @@ jobs:
           password: ${{secrets.GITHUB_TOKEN}}
 
       - name: Push the latest tag
-        run: docker push $DOCKER_REGISTRY_URL/$GITHUB_ACTOR/$DOCKER_IMAGE_NAME-backend:latest
+        run: docker push $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME-backend:latest
