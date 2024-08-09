@@ -20,7 +20,7 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - 8080:80
+      - 5173:80
     deploy:
       resources:
         limits:

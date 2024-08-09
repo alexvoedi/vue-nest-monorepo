@@ -16,7 +16,7 @@ COPY . /app
 
 WORKDIR /app
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter=common
 
 RUN pnpm --filter=common build
 
@@ -24,6 +24,7 @@ RUN pnpm --filter=common build
 
 FROM build AS build-frontend
 
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm --filter=frontend install --frozen-lockfile
 RUN pnpm --filter=frontend build
 RUN pnpm deploy --filter=frontend --prod /prod/frontend
 
@@ -31,6 +32,7 @@ RUN pnpm deploy --filter=frontend --prod /prod/frontend
 
 FROM build AS build-backend
 
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm --filter=backend install --frozen-lockfile
 RUN pnpm --filter=backend build
 RUN pnpm deploy --filter=backend --prod /prod/backend
 
