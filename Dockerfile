@@ -12,9 +12,9 @@ FROM base AS build
 
 ENV NODE_ENV=build
 
-COPY . /app
-
 WORKDIR /app
+
+COPY . .
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter=common
 
@@ -47,6 +47,9 @@ COPY --chown=nginx:nginx --from=build-frontend /prod/frontend/nginx.conf /etc/ng
 
 EXPOSE 80
 
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD curl -f http://localhost/ || exit 1
+
+
 CMD ["nginx", "-g", "daemon off;"]
 
 # ---
@@ -58,5 +61,8 @@ WORKDIR /prod/backend
 COPY --from=build-backend /prod/backend .
 
 EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD curl -f http://localhost:3000/health || exit 1
+
 
 CMD ["node", "dist/main.js"]
