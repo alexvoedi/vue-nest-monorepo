@@ -14,16 +14,17 @@ ENV NODE_ENV=build
 
 WORKDIR /app
 
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./ && \
- apps/frontend/package.json ./apps/frontend/ && \
- apps/backend/package.json ./apps/backend/ && \
-  packages/common/package.json ./packages/common/ && \
-  packages/tsconfig/package.json ./packages/tsconfig/
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
+
+COPY apps/frontend/package.json apps/frontend/
+COPY apps/backend/package.json apps/backend/
+COPY packages/common/package.json packages/common/
+COPY packages/tsconfig/package.json packages/tsconfig/
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch --frozen-lockfile
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
-COPY . .
+COPY packages /app/packages
 
 RUN pnpm --filter=common build
 
@@ -31,6 +32,7 @@ RUN pnpm --filter=common build
 
 FROM build AS build-frontend
 
+COPY apps/frontend /app/apps/frontend
 RUN pnpm --filter=frontend build
 RUN pnpm deploy --filter=frontend --prod --no-optional /prod/frontend
 
@@ -38,6 +40,7 @@ RUN pnpm deploy --filter=frontend --prod --no-optional /prod/frontend
 
 FROM build AS build-backend
 
+COPY apps/backend /app/apps/backend
 RUN pnpm --filter=backend build
 RUN pnpm deploy --filter=backend --prod --no-optional /prod/backend
 
