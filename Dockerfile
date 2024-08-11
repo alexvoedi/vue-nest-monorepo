@@ -14,10 +14,15 @@ ENV NODE_ENV=build
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+# copy all package.json files from the root and all subdirectories
+COPY package.json pnpm-workspace.yaml ./
+COPY apps/frontend/package.json ./apps/frontend/
+COPY apps/backend/package.json ./apps/backend/
+COPY packages/common/package.json ./packages/common/
+COPY packages/tsconfig/package.json ./packages/tsconfig/
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch --frozen-lockfile
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
 
 COPY . .
 
