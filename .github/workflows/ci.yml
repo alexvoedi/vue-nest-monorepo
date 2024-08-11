@@ -147,8 +147,8 @@ jobs:
           tags: ${{env.DOCKER_REGISTRY_URL}}/${{env.DOCKER_NAMESPACE}}/${{env.DOCKER_IMAGE_NAME}}-frontend:latest
           outputs: type=docker,dest=/tmp/frontend.tar
           context: .
-          cache-from: type=registry,ref=gha:buildcache
-          cache-to: type=registry,ref=gha:buildcache,mode=max
+          cache-from: type=gha:buildcache
+          cache-to: type=gha:buildcache,mode=max
 
       - name: Upload Image
         uses: actions/upload-artifact@v4
@@ -202,8 +202,8 @@ jobs:
           tags: ${{env.DOCKER_REGISTRY_URL}}/${{env.DOCKER_NAMESPACE}}/${{env.DOCKER_IMAGE_NAME}}-backend:latest
           outputs: type=docker,dest=/tmp/backend.tar
           context: .
-          cache-from: type=registry,ref=gha:buildcache
-          cache-to: type=registry,ref=gha:buildcache,mode=max
+          cache-from: type=gha:buildcache
+          cache-to: type=gha:buildcache,mode=max
 
       - name: Upload Image
         uses: actions/upload-artifact@v4
