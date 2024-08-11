@@ -14,10 +14,12 @@ ENV NODE_ENV=build
 
 WORKDIR /app
 
-COPY . .
+COPY package.json pnpm-lock.yaml ./
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch --frozen-lockfile
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
+COPY . .
 
 RUN pnpm --filter=common build
 
