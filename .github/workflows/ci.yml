@@ -141,7 +141,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           target: frontend
-          tags: $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME-frontend:latest
+          tags: $DOCKER_IMAGE_NAME-frontend:latest
           outputs: type=docker,dest=/tmp/frontend.tar
 
       - name: Upload Image
@@ -190,7 +190,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           target: backend
-          tags: $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME-backend:latest
+          tags: $DOCKER_IMAGE_NAME-backend:latest
           outputs: type=docker,dest=/tmp/backend.tar
 
       - name: Upload Image
