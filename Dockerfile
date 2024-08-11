@@ -22,25 +22,35 @@ COPY packages/common/package.json packages/common/
 COPY packages/tsconfig/package.json packages/tsconfig/
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch --frozen-lockfile
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
+# ---
+
+FROM build AS build-common
 
 COPY packages /app/packages
 
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter=common
 RUN pnpm --filter=common build
 
 # ---
 
-FROM build AS build-frontend
+FROM build-common AS build-frontend
 
 COPY apps/frontend /app/apps/frontend
+
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter=frontend
+
 RUN pnpm --filter=frontend build
 RUN pnpm deploy --filter=frontend --prod --no-optional /prod/frontend
 
 # ---
 
-FROM build AS build-backend
+FROM build-common AS build-backend
 
 COPY apps/backend /app/apps/backend
+
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter=backend
+
 RUN pnpm --filter=backend build
 RUN pnpm deploy --filter=backend --prod --no-optional /prod/backend
 
