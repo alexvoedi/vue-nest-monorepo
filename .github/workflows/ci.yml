@@ -258,6 +258,7 @@ jobs:
     steps:
       - uses: actions/delete-package-versions@v5
         with:
-          package-name: ${{env.DOCKER_NAMESPACE}}/${{env.DOCKER_IMAGE_NAME}}-backend
+          package-name: ${{env.DOCKER_IMAGE_NAME}}-backend
+          owner: ${{env.DOCKER_NAMESPACE}}
           package-type: container
           min-versions-to-keep: 1
