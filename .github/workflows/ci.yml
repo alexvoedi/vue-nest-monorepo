@@ -247,7 +247,8 @@ jobs:
     steps:
       - uses: actions/delete-package-versions@v5
         with:
-          package-name: ${{env.DOCKER_NAMESPACE}}/${{env.DOCKER_IMAGE_NAME}}-frontend
+          owner: ${{env.DOCKER_NAMESPACE}}
+          package-name: ${{env.DOCKER_IMAGE_NAME}}-frontend
           package-type: container
           min-versions-to-keep: 1
 
@@ -258,7 +259,7 @@ jobs:
     steps:
       - uses: actions/delete-package-versions@v5
         with:
-          package-name: ${{env.DOCKER_IMAGE_NAME}}-backend
           owner: ${{env.DOCKER_NAMESPACE}}
+          package-name: ${{env.DOCKER_IMAGE_NAME}}-backend
           package-type: container
           min-versions-to-keep: 1
