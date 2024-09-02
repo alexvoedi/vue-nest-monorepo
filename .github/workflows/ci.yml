@@ -256,6 +256,7 @@ jobs:
       - name: List Images
         run: docker image ls
 
-      - name: Delete Images
+        # delete all packages that are not latest
+      - name: Delete Packages
         run: |
-          docker image ls --format '{{.Repository}}:{{.Tag}}' | grep -v latest | xargs -n 1 docker image rm
+          docker image ls | grep $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME | grep -v latest | awk '{print $3}' | xargs -I {} docker image rm {}
