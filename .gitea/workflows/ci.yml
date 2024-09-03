@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: gitea/checkout@v1
+        uses: gitea/checkout@v4
 
       - name: Install pnpm
         run: |
@@ -42,7 +42,7 @@ jobs:
       - install-dependencies
     steps:
       - name: Checkout
-        uses: gitea/checkout@v1
+        uses: gitea/checkout@v4
 
       - name: Install pnpm
         run: |
