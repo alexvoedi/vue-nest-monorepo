@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: gitea/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Install pnpm
         run: |
@@ -42,7 +42,7 @@ jobs:
       - install-dependencies
     steps:
       - name: Checkout
-        uses: gitea/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Install pnpm
         run: |
@@ -72,7 +72,7 @@ jobs:
         - install-dependencies
     steps:
       - name: Checkout
-        uses: gitea/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Install pnpm
         run: |
@@ -98,7 +98,7 @@ jobs:
         - install-dependencies
     steps:
       - name: Checkout
-        uses: gitea/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Install pnpm
         run: |
@@ -127,7 +127,7 @@ jobs:
     environment: build
     steps:
       - name: Checkout
-        uses: gitea/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -183,7 +183,7 @@ jobs:
     environment: build
     steps:
       - name: Checkout
-        uses: gitea/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
