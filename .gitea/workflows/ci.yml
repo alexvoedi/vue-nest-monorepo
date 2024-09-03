@@ -1,0 +1,272 @@
+name: Build Docker Image
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  DOCKER_REGISTRY_URL: ghcr.io
+  DOCKER_NAMESPACE: ${{ gitea.repository.owner.username }}
+  DOCKER_IMAGE_NAME: monorepo
+  HUSKY: 0
+
+jobs:
+  install-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: gitea/checkout@v1
+
+      - name: Install pnpm
+        run: |
+          npm install -g pnpm@9.7.0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: |
+          pnpm install --frozen-lockfile
+
+  check-types:
+    runs-on: ubuntu-latest
+    needs:
+      - install-dependencies
+    steps:
+      - name: Checkout
+        uses: gitea/checkout@v1
+
+      - name: Install pnpm
+        run: |
+          npm install -g pnpm@9.7.0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: |
+          pnpm install --frozen-lockfile --offline
+
+      - name: Build
+        run: |
+          pnpm --filter=common build
+
+      - name: Check Types
+        run: |
+          pnpm run typecheck
+
+  lint:
+    runs-on: ubuntu-latest
+    needs:
+        - install-dependencies
+    steps:
+      - name: Checkout
+        uses: gitea/checkout@v1
+
+      - name: Install pnpm
+        run: |
+          npm install -g pnpm@9.7.0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: |
+          pnpm install --frozen-lockfile --offline
+
+      - name: Lint
+        run: |
+          pnpm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    needs:
+        - install-dependencies
+    steps:
+      - name: Checkout
+        uses: gitea/checkout@v1
+
+      - name: Install pnpm
+        run: |
+          npm install -g pnpm@9.7.0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: |
+          pnpm install --frozen-lockfile --offline
+
+      - name: Build
+        run: |
+          pnpm --filter=common build
+
+      - name: Run Tests
+        run: |
+          pnpm run test
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    environment: build
+    steps:
+      - name: Checkout
+        uses: gitea/checkout@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build the Docker image
+        uses: docker/build-push-action@v6
+        with:
+          target: frontend
+          tags: ${{env.DOCKER_REGISTRY_URL}}/${{env.DOCKER_NAMESPACE}}/${{env.DOCKER_IMAGE_NAME}}-frontend:latest
+          outputs: type=docker,dest=/tmp/frontend.tar
+          context: .
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,mode=max,scope=frontend
+
+      - name: Upload Image
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend
+          path: /tmp/frontend.tar
+          retention-days: 3
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    needs:
+      - build-frontend
+      - check-types
+      - lint
+      - test
+    steps:
+      - name: Download Image
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend
+          path: /tmp
+
+      - name: Load Image
+        run: |
+          docker load --input /tmp/frontend.tar
+          docker image ls -a
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{env.DOCKER_REGISTRY_URL}}
+          username: ${{gitea.actor}}
+          password: ${{secrets.GITEA_TOKEN}}
+
+      - name: Push Image
+        run: docker push $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME-frontend:latest
+
+  build-backend:
+    runs-on: ubuntu-latest
+    environment: build
+    steps:
+      - name: Checkout
+        uses: gitea/checkout@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build the Docker image
+        uses: docker/build-push-action@v6
+        with:
+          target: backend
+          tags: ${{env.DOCKER_REGISTRY_URL}}/${{env.DOCKER_NAMESPACE}}/${{env.DOCKER_IMAGE_NAME}}-backend:latest
+          outputs: type=docker,dest=/tmp/backend.tar
+          context: .
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,mode=max,scope=backend
+
+      - name: Upload Image
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend
+          path: /tmp/backend.tar
+          retention-days: 3
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+    needs:
+      - build-backend
+      - check-types
+      - lint
+      - test
+    steps:
+      - name: Download Image
+        uses: actions/download-artifact@v4
+        with:
+          name: backend
+          path: /tmp
+
+      - name: Load Image
+        run: |
+          docker load --input /tmp/backend.tar
+          docker image ls -a
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{env.DOCKER_REGISTRY_URL}}
+          username: ${{gitea.actor}}
+          password: ${{secrets.GITEA_TOKEN}}
+
+      - name: Push Image
+        run: docker push $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME-backend:latest
+
+  cleanup:
+    runs-on: ubuntu-latest
+    needs:
+      - deploy-frontend
+      - deploy-backend
+    steps:
+      - name: Remove old artifacts
+        uses: c-hive/gha-remove-artifacts@v1
+        with:
+          age: 1 day
+          skip-recent: 4
+
+  cleanup-frontend:
+    runs-on: ubuntu-latest
+    needs:
+      - deploy-frontend
+    steps:
+      - name: Remove old frontend images
+        uses: actions/delete-package-versions@v5
+        with:
+          owner: ${{env.DOCKER_NAMESPACE}}
+          package-name: ${{env.DOCKER_IMAGE_NAME}}-frontend
+          package-type: container
+          min-versions-to-keep: 1
+
+  cleanup-backend:
+    runs-on: ubuntu-latest
+    needs:
+      - deploy-backend
+    steps:
+      - uses: actions/delete-package-versions@v5
+        with:
+          owner: ${{env.DOCKER_NAMESPACE}}
+          package-name: ${{env.DOCKER_IMAGE_NAME}}-backend
+          package-type: container
+          min-versions-to-keep: 1
