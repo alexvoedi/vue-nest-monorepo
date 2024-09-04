@@ -147,8 +147,8 @@ jobs:
           tags: ${{env.DOCKER_REGISTRY_URL}}/${{env.DOCKER_NAMESPACE}}/${{env.DOCKER_IMAGE_NAME}}-frontend:latest
           outputs: type=docker,dest=/tmp/frontend.tar
           context: .
-          cache-from: scope=frontend
-          cache-to: mode=max,scope=frontend
+          cache-from: type=registry,scope=frontend
+          cache-to: type=registry,mode=max,scope=frontend
 
       - name: Upload Image
         uses: actions/upload-artifact@v4
@@ -203,8 +203,8 @@ jobs:
           tags: ${{env.DOCKER_REGISTRY_URL}}/${{env.DOCKER_NAMESPACE}}/${{env.DOCKER_IMAGE_NAME}}-backend:latest
           outputs: type=docker,dest=/tmp/backend.tar
           context: .
-          cache-from: scope=backend
-          cache-to: mode=max,scope=backend
+          cache-from: type=registry,scope=backend
+          cache-to: type=registry,mode=max,scope=backend
 
       - name: Upload Image
         uses: actions/upload-artifact@v4
