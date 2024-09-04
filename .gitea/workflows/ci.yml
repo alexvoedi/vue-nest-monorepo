@@ -173,7 +173,7 @@ jobs:
       - test
     steps:
       - name: Download Image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           name: frontend
           path: /tmp
@@ -182,6 +182,13 @@ jobs:
         run: |
           docker load --input /tmp/frontend.tar
           docker image ls -a
+
+      - name: Login to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DOCKER_REGISTRY_URL }}
+          username: ${{ gitea.repository_owner }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
 
       - name: Push Image
         run: docker push ${{env.DOCKER_IMAGE}}-frontend:latest
@@ -195,6 +202,13 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Login to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DOCKER_REGISTRY_URL }}
+          username: ${{ gitea.repository_owner }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
 
       - name: Build the Docker image
         uses: docker/build-push-action@v6
@@ -222,7 +236,7 @@ jobs:
       - test
     steps:
       - name: Download Image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           name: backend
           path: /tmp
@@ -231,6 +245,13 @@ jobs:
         run: |
           docker load --input /tmp/backend.tar
           docker image ls -a
+
+      - name: Login to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DOCKER_REGISTRY_URL }}
+          username: ${{ gitea.repository_owner }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
 
       - name: Push Image
         run: docker push ${{env.DOCKER_IMAGE}}-backend:latest
