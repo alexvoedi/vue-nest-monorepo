@@ -151,11 +151,11 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           target: frontend
-          tags: ${{env.DOCKER_IMAGE}}:frontend
+          tags: ${{env.DOCKER_IMAGE}}-frontend:latest
           outputs: type=docker,dest=/tmp/frontend.tar
           context: .
-          cache-from: type=registry,ref=${{env.DOCKER_IMAGE}}:frontend-build
-          cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}:frontend-build,mode=max,image-manifest=true,oci-mediatypes=true
+          cache-from: type=registry,ref=${{env.DOCKER_IMAGE}}-frontend:cache
+          cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}-frontend:cache,mode=max,image-manifest=true,oci-mediatypes=true
 
       - name: Upload Image
         uses: actions/upload-artifact@v3
@@ -191,7 +191,7 @@ jobs:
           password: ${{ secrets.REGISTRY_TOKEN }}
 
       - name: Push Image
-        run: docker push ${{env.DOCKER_IMAGE}}:frontend
+        run: docker push ${{env.DOCKER_IMAGE}}-frontend:latest
 
   build-backend:
     runs-on: ubuntu-latest
@@ -214,11 +214,11 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           target: backend
-          tags: ${{env.DOCKER_IMAGE}}:backend
+          tags: ${{env.DOCKER_IMAGE}}-backend:latest
           outputs: type=docker,dest=/tmp/backend.tar
           context: .
-          cache-from: type=registry,ref=${{env.DOCKER_IMAGE}}:backend-build
-          cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}:backend-build,mode=max,image-manifest=true,oci-mediatypes=true
+          cache-from: type=registry,ref=${{env.DOCKER_IMAGE}}-backend:cache
+          cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}-backend:cache,mode=max,image-manifest=true,oci-mediatypes=true
 
       - name: Upload Image
         uses: actions/upload-artifact@v3
@@ -254,4 +254,4 @@ jobs:
           password: ${{ secrets.REGISTRY_TOKEN }}
 
       - name: Push Image
-        run: docker push ${{env.DOCKER_IMAGE}}:backend
+        run: docker push ${{env.DOCKER_IMAGE}}-backend:latest
