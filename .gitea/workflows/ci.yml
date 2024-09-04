@@ -181,7 +181,7 @@ jobs:
         with:
           registry: ${{ env.DOCKER_REGISTRY_URL }}
           username: ${{ gitea.repository_owner }}
-          password: ${{ secrets.GITEA_TOKEN}}
+          password: ${{ secrets.REGISTRY_TOKEN}}
 
       - name: Push Image
         run: docker push $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME-frontend:latest
@@ -201,7 +201,7 @@ jobs:
         with:
           registry: ${{ env.DOCKER_REGISTRY_URL }}
           username: ${{ gitea.repository_owner }}
-          password: ${{ secrets.GITEA_TOKEN}}
+          password: ${{ secrets.REGISTRY_TOKEN}}
 
       - name: Build the Docker image
         uses: docker/build-push-action@v6
