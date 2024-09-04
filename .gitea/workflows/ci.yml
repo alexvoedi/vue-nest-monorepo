@@ -158,7 +158,7 @@ jobs:
           cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}:frontend,mode=max,image-manifest=true,oci-mediatypes=true
 
       - name: Upload Image
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: frontend
           path: /tmp/frontend.tar
@@ -207,7 +207,7 @@ jobs:
           cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}:backend,mode=max,mode=max,image-manifest=true,oci-mediatypes=true
 
       - name: Upload Image
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: backend
           path: /tmp/backend.tar
