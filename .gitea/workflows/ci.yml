@@ -145,13 +145,13 @@ jobs:
         with:
           registry: ${{ env.DOCKER_REGISTRY_URL }}
           username: ${{ gitea.repository_owner }}
-          password: ${{ secrets.REGISTRY_TOKEN}}
+          password: ${{ secrets.REGISTRY_TOKEN }}
 
       - name: Build the Docker image
         uses: docker/build-push-action@v6
         with:
           target: frontend
-          tags: ${{env.DOCKER_REGISTRY_URL}}/${{env.DOCKER_NAMESPACE}}/${{env.DOCKER_IMAGE_NAME}}-frontend:latest
+          tags: ${{env.DOCKER_REGISTRY_URL}}/${{ gitea.repository }}-frontend:latest
           outputs: type=docker,dest=/tmp/frontend.tar
           context: .
           cache-from: type=registry,ref=${{env.DOCKER_REGISTRY_URL}},scope=frontend
@@ -183,13 +183,6 @@ jobs:
           docker load --input /tmp/frontend.tar
           docker image ls -a
 
-      - name: Login to the Container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.DOCKER_REGISTRY_URL }}
-          username: ${{ gitea.repository_owner }}
-          password: ${{ secrets.REGISTRY_TOKEN}}
-
       - name: Push Image
         run: docker push $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME-frontend:latest
 
@@ -202,13 +195,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Login to the Container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.DOCKER_REGISTRY_URL }}
-          username: ${{ gitea.repository_owner }}
-          password: ${{ secrets.REGISTRY_TOKEN}}
 
       - name: Build the Docker image
         uses: docker/build-push-action@v6
@@ -245,13 +231,6 @@ jobs:
         run: |
           docker load --input /tmp/backend.tar
           docker image ls -a
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{env.DOCKER_REGISTRY_URL}}
-          username: ${{gitea.actor}}
-          password: ${{secrets.GITEA_TOKEN}}
 
       - name: Push Image
         run: docker push $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME-backend:latest
