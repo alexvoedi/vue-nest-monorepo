@@ -154,8 +154,8 @@ jobs:
           tags: ${{env.DOCKER_IMAGE}}:frontend
           outputs: type=docker,dest=/tmp/frontend.tar
           context: .
-          cache-from: type=registry,ref=${{env.DOCKER_IMAGE}}:frontend
-          cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}:frontend,mode=max,image-manifest=true,oci-mediatypes=true
+          cache-from: type=registry,ref=${{env.DOCKER_IMAGE}}:frontend-build
+          cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}:frontend-build,mode=max,image-manifest=true,oci-mediatypes=true
 
       - name: Upload Image
         uses: actions/upload-artifact@v3
@@ -217,8 +217,8 @@ jobs:
           tags: ${{env.DOCKER_IMAGE}}:backend
           outputs: type=docker,dest=/tmp/backend.tar
           context: .
-          cache-from: type=registry,ref=${{env.DOCKER_IMAGE}}:backend
-          cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}:backend,mode=max,image-manifest=true,oci-mediatypes=true
+          cache-from: type=registry,ref=${{env.DOCKER_IMAGE}}:backend-build
+          cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}:backend-build,mode=max,image-manifest=true,oci-mediatypes=true
 
       - name: Upload Image
         uses: actions/upload-artifact@v3
