@@ -11,7 +11,7 @@ on:
 
 env:
   DOCKER_REGISTRY_URL: git.nekatz.com
-  DOCKER_NAMESPACE: ${{ gitea.repository.owner }}
+  DOCKER_NAMESPACE: ${{ gitea.repository_owner }}
   DOCKER_IMAGE_NAME: monorepo
   HUSKY: 0
 
