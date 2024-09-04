@@ -254,4 +254,4 @@ jobs:
           password: ${{ secrets.REGISTRY_TOKEN }}
 
       - name: Push Image
-        run: docker push ${{env.DOCKER_IMAGE}}:backend:latest
+        run: docker push ${{env.DOCKER_IMAGE}}:backend
