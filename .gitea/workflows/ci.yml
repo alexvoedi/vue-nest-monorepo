@@ -151,11 +151,11 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           target: frontend
-          tags: ${{env.DOCKER_REGISTRY_URL}}/${{ gitea.repository }}-frontend:latest
+          tags: ${{env.DOCKER_REGISTRY_URL}}/${{gitea.repository}}-frontend:latest
           outputs: type=docker,dest=/tmp/frontend.tar
           context: .
-          cache-from: type=registry,ref=${{env.DOCKER_REGISTRY_URL}},scope=frontend
-          cache-to: type=registry,ref=${{env.DOCKER_REGISTRY_URL}},mode=max,scope=frontend
+          cache-from: type=registry,ref=${{env.DOCKER_REGISTRY_URL}}/${{gitea.repository}}-frontend,scope=frontend
+          cache-to: type=registry,ref=${{env.DOCKER_REGISTRY_URL}}/${{gitea.repository}}-frontend,mode=max,scope=frontend
 
       - name: Upload Image
         uses: actions/upload-artifact@v4
