@@ -10,7 +10,7 @@ on:
       - main
 
 env:
-  DOCKER_REGISTRY_URL: ghcr.io
+  DOCKER_REGISTRY_URL: git.nekatz.com
   DOCKER_NAMESPACE: ${{ gitea.repository.owner.username }}
   DOCKER_IMAGE_NAME: monorepo
   HUSKY: 0
