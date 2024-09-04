@@ -155,7 +155,7 @@ jobs:
           outputs: type=docker,dest=/tmp/frontend.tar
           context: .
           cache-from: type=registry,ref=${{env.DOCKER_IMAGE}}:frontend
-          cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}:frontend,mode=max
+          cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}:frontend,mode=max,image-manifest=true,oci-mediatypes=true
 
       - name: Upload Image
         uses: actions/upload-artifact@v4
@@ -204,7 +204,7 @@ jobs:
           outputs: type=docker,dest=/tmp/backend.tar
           context: .
           cache-from: type=registry,ref=${{env.DOCKER_IMAGE}}:backend
-          cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}:backend,mode=max
+          cache-to: type=registry,ref=${{env.DOCKER_IMAGE}}:backend,mode=max,mode=max,image-manifest=true,oci-mediatypes=true
 
       - name: Upload Image
         uses: actions/upload-artifact@v4
