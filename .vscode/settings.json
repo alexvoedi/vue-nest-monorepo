@@ -30,5 +30,8 @@
     "jsonc",
     "yaml"
   ],
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": "file:///e%3A/Repositories/git.nekatz.com/vue-nest-monorepo/.gitea/workflows/ci.yml"
+  }
 }
