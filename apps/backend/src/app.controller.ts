@@ -1,5 +1,5 @@
 import { Controller, Get, Logger } from '@nestjs/common'
-import { text } from 'common'
+import { helloWorld } from 'common'
 
 @Controller()
 export class AppController {
@@ -10,7 +10,7 @@ export class AppController {
   @Get()
   getHello() {
     return {
-      message: text,
+      message: helloWorld,
       date: new Date(),
     }
   }

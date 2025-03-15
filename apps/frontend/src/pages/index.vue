@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { text } from 'common'
+import { helloWorld } from 'common'
 
 const data = ref<{
   message: string
@@ -23,10 +23,10 @@ onMounted(async () => {
 
 <template>
   <div>
-    <h1>{{ text }}</h1>
-    <pre>{{ data }}</pre>
+    <div>This is what is shared between frontend and backend: <em>{{ helloWorld }}</em></div>
+    <div>
+      This is a message from the backend:
+      <pre>{{ data }}</pre>
+    </div>
   </div>
 </template>
-
-<style>
-</style>

@@ -1,6 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "./base.tsconfig.json",
   "compilerOptions": {
     "incremental": true,
     "target": "ES2021",
@@ -8,10 +7,24 @@
     "experimentalDecorators": true,
     "module": "commonjs",
     "strictBindCallApply": false,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
     "removeComments": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "lib": ["esnext"],
+    "composite": false,
+    "declaration": true,
+    "declarationMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "sourceMap": true
   }
 }

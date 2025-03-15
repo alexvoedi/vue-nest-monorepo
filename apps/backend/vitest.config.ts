@@ -1,0 +1,9 @@
+import { defineProject } from 'vitest/config'
+
+export default defineProject({
+  test: {
+    name: 'backend',
+    include: ['**/*.test.ts'],
+  },
+  clearScreen: false,
+})

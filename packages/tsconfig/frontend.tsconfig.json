@@ -5,6 +5,24 @@
     "jsx": "preserve",
     "lib": ["esnext", "dom"],
     "resolveJsonModule": true,
-    "types": ["vite/client"]
+    "esModuleInterop": true,
+    "types": ["vite/client"],
+    "module": "esnext",
+    "target": "ESNext",
+    "composite": false,
+    "declaration": true,
+    "declarationMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "sourceMap": true
   }
 }

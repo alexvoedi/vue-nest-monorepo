@@ -1,5 +1,8 @@
 name: Build Docker Image
 
+permissions:
+  packages: write
+
 on:
   workflow_dispatch:
   push:
@@ -25,14 +28,13 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.7.0
           run_install: false
 
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install Dependencies
         run: |
@@ -49,14 +51,13 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.7.0
           run_install: false
 
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install Dependencies
         run: |
@@ -73,7 +74,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     needs:
-        - install-dependencies
+      - install-dependencies
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -81,14 +82,13 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.7.0
           run_install: false
 
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install Dependencies
         run: |
@@ -101,7 +101,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs:
-        - install-dependencies
+      - install-dependencies
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -109,14 +109,13 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.7.0
           run_install: false
 
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install Dependencies
         run: |
@@ -129,6 +128,13 @@ jobs:
       - name: Run Tests
         run: |
           pnpm run test
+
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage
+          retention-days: 3
 
   build-frontend:
     runs-on: ubuntu-latest
@@ -241,41 +247,3 @@ jobs:
 
       - name: Push Image
         run: docker push $DOCKER_REGISTRY_URL/$DOCKER_NAMESPACE/$DOCKER_IMAGE_NAME-backend:latest
-
-
-  cleanup:
-    runs-on: ubuntu-latest
-    needs:
-      - deploy-frontend
-      - deploy-backend
-    steps:
-      - name: Remove old artifacts
-        uses: c-hive/gha-remove-artifacts@v1
-        with:
-          age: 1 day
-          skip-recent: 4
-
-  cleanup-frontend:
-    runs-on: ubuntu-latest
-    needs:
-      - deploy-frontend
-    steps:
-      - name: Remove old frontend images
-        uses: actions/delete-package-versions@v5
-        with:
-          owner: ${{env.DOCKER_NAMESPACE}}
-          package-name: ${{env.DOCKER_IMAGE_NAME}}-frontend
-          package-type: container
-          min-versions-to-keep: 1
-
-  cleanup-backend:
-    runs-on: ubuntu-latest
-    needs:
-      - deploy-backend
-    steps:
-      - uses: actions/delete-package-versions@v5
-        with:
-          owner: ${{env.DOCKER_NAMESPACE}}
-          package-name: ${{env.DOCKER_IMAGE_NAME}}-backend
-          package-type: container
-          min-versions-to-keep: 1

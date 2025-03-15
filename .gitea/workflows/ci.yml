@@ -10,7 +10,7 @@ on:
       - main
 
 env:
-  DOCKER_REGISTRY_URL: git.nekatz.com
+  DOCKER_REGISTRY_URL: ${{ secrets.REGISTRY_URL }}
   DOCKER_IMAGE_NAME: ${{ gitea.repository }}
   DOCKER_IMAGE: ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}
   HUSKY: 0
@@ -25,7 +25,6 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.7.0
           run_install: false
 
       - name: Install Node.js
@@ -49,7 +48,6 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.7.0
           run_install: false
 
       - name: Install Node.js
@@ -81,7 +79,6 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.7.0
           run_install: false
 
       - name: Install Node.js
@@ -109,7 +106,6 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.7.0
           run_install: false
 
       - name: Install Node.js
@@ -129,6 +125,13 @@ jobs:
       - name: Run Tests
         run: |
           pnpm run test
+
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage
+          retention-days: 3
 
   build-frontend:
     runs-on: ubuntu-latest
